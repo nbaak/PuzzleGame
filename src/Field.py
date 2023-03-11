@@ -27,6 +27,7 @@ class Field:
         
         if self.field[pos[1]][pos[0]] == 0 or override:
             self.field[pos[1]][pos[0]] = item
+            return item
 
     def get_at(self, pos:tuple[int]):
         if pos[0] < 0 or pos[0] >= self.width:

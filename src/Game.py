@@ -4,9 +4,9 @@ import random
 
 class Game(Field):
 
-    def __init__(self, width, height):
+    def __init__(self, width, height, level=0):
         super().__init__(width, height)
-        self.level = 0
+        self.level = level
         self.max_value = 1
         self.queue = [random.randint(1,self.max_value) for _ in range(10)]  # maybe deque?
         
@@ -37,7 +37,7 @@ class Game(Field):
         for d in directions:
             c_pos = tuple_add(pos, d)
             if c_pos in found:
-                print(f'skip {c_pos}')
+                # print(f'skip {c_pos}')
                 continue
 
             value = self.get_at(c_pos)
@@ -59,6 +59,10 @@ class Game(Field):
 
         return points
 
+    def check_possible_move(self, check_value:int):
+        # TODO: check if there are more possible moves for the player to do. else: gameover
+        pass
+
     def get_queue(self):
         return self.queue
     
@@ -66,6 +70,12 @@ class Game(Field):
         item = self.queue.pop(0)
         self.queue.append(random.randint(1, self.max_value))
         return item
+    
+    def dims(self):
+        return len(self.field[0]), len(self.field)
+    
+    def __len__(self):
+        return len(self.field)
 
 if __name__ == "__main__":
     game = Game(5, 5)
@@ -99,11 +109,8 @@ if __name__ == "__main__":
     
     game.show()
     
+    print(len(game))
+    
 
-    # # test queue
-    # print()
-    # for _ in range(5):
-    #     print(game.take_next_queue_element())
-    #     print(game.get_queue())
-    #     print()
+
     
