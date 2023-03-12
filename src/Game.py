@@ -14,6 +14,9 @@ class Game(Field):
         self.blocked_fields = set()
         self._generate_obstacle()
 
+        self.points = 0
+        self.step = 0
+
     def _generate_obstacle(self):
         while len(self.blocked_fields) < self.level:
             r_pos = (random.randint(0, self.width - 1), random.randint(0, self.height - 1))
@@ -63,29 +66,41 @@ class Game(Field):
                 self.max_value = pos_value + 1
 
         gameover = self.check_possible_move()
-
+        self.points += points
+        
         return points, gameover
 
     def check_possible_move(self) -> bool:
-        # TODO: check if there are more possible moves for the player to do. else: gameover        
+        # TODO: check if there are more possible moves for the player to do. else: gameover
         for line in self.field:
-            for field in line:                
+            for field in line:
                 if field == 0:
                     return False
-                
+
         return True
 
     def reset(self):
         self.create_new_field()
+
         self.max_value = 1
+        self.points = 0
+        self.step = 0
 
         self.blocked_fields = set()
 
         self._generate_obstacle()
         self._create_queue()
+        
+    def place_at(self, item, pos:tuple[int], override=False, do_step=False):
+        if do_step:
+            self.step += 1
+        return Field.place_at(self, item, pos, override=override)
 
     def get_queue(self):
         return self.queue
+    
+    def get_status(self):
+        return f"Level: {self.level}, Round: {self.step}, Points: {self.points}"
 
     def take_next_queue_element(self):
         item = self.queue.pop(0)
