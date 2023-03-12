@@ -48,20 +48,23 @@ def draw_queue(screen, blocksize=20, start_at_height=0, game:Game=None):
 
 def set_value(pos:tuple, game:Game):
     total_value = 0
+    gameover = False
+    
     if game:
         value = game.queue[0]
         placed = game.place_at(value, pos)
         
+        
         if placed == value:
-            game.take_next_queue_element()
-            pts = game.check_rules(pos, value)
+            pts, gameover = game.check_rules(pos, value)
             total_value += pts
+            game.take_next_queue_element()
             
             while pts > 0:
-                pts = game.check_rules(pos, value)
+                pts, gameover = game.check_rules(pos, value)
                 total_value += pts
 
-    return total_value
+    return total_value, gameover
 
 
 def main(width=4, height=3):
@@ -80,6 +83,7 @@ def main(width=4, height=3):
     game.show()
     pos = None
     points = 0
+    gameover = False
 
     while True:
         draw_grid(screen, blocksize=BLOCKSIZE, game=game)
@@ -96,12 +100,18 @@ def main(width=4, height=3):
                 pos = (x, y)
 
         if pos:
-            points += set_value(pos, game)
+            pts, gameover = set_value(pos, game)
+            points += pts
             pygame.display.set_caption(f'Block Riddle {points}')
             pos = None
 
+        
+        if gameover:
+            game.reset()
+            print("game over")
+            gameover = False
+
         pygame.display.update()
 
-
 if __name__ == "__main__":
-    main(5, 5)
+    main(2, 2)
