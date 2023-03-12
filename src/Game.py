@@ -94,7 +94,13 @@ class Game(Field):
     def place_at(self, item, pos:tuple[int], override=False, do_step=False):
         if do_step:
             self.step += 1
-        return Field.place_at(self, item, pos, override=override)
+        placed = Field.place_at(self, item, pos, override=override)
+        
+        if placed == item:
+            self.pop_queue_element()
+        
+        
+        return placed
 
     def get_queue(self):
         return self.queue
@@ -102,7 +108,7 @@ class Game(Field):
     def get_status(self):
         return f"Level: {self.level}, Round: {self.step}, Points: {self.points}"
 
-    def take_next_queue_element(self):
+    def pop_queue_element(self):
         item = self.queue.pop(0)
         self.queue.append(random.randint(1, self.max_value))
         return item
