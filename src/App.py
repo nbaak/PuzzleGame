@@ -71,7 +71,6 @@ def set_value(pos:tuple, game:Game):
         if placed == value:
             pts, gameover = game.check_rules(pos, value)
             total_value += pts
-            # game.pop_queue_element()
 
             while pts > 0:
                 pts, gameover = game.check_rules(pos, value)
