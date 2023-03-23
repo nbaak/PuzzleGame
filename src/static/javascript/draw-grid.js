@@ -5,17 +5,19 @@ function setField(field){
 
 $('#container').ready(function(){
     
+    /*
     $.getJSON('/update', function(data){
         field = data['field'];
         queue = data['queue'];
         
         setField(field);
     })
+    */
     
-    /* if /update is only POST
+    // update is only POST
     $.ajax({
         type: 'POST',
-        data: {},
+        data: {'row': -1, 'col': -1, 'session': sessionId},
         url: '/update',
         success: function(data){
             console.log(data);
@@ -23,5 +25,5 @@ $('#container').ready(function(){
             setField(data['field']);
         }
     });
-    */
+    
 })

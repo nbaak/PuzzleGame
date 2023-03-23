@@ -1,27 +1,33 @@
 import uuid
 import time
+import Game
 
 
 class Session:
     
-    def __init__(self, ip):
+    def __init__(self, ip, port):
         self.ip = ip
+        self.port = port
         self.id = str(uuid.uuid4())
         self.started = time.time()
         self.updated = time.time()
         
-        self.game = None
+        self.game:Game = None
         
-    def update(self, coordinates:tuple=None):
+    def update(self, coordinates:tuple[int]):
         self.updated = time.time()
         
-        # returns field and queue, maybe steps
+        r = self.game.play(coordinates)
+        print('R', r)
+        
+        return self.game.field
         
     def check(self):
-        current_time = time.time()
-        delta = int(current_time - self.updated)
-        
-        return delta < 60 * 30 # if older than 30min, return false
+        if self.game:
+            current_time = time.time()
+            delta = int(current_time - self.updated)
+            
+            return delta < 60 * 30 # if older than 30min, return false
     
     def __repr__(self):
         return self.id

@@ -6,7 +6,7 @@
 
 <body>
 	<div>PUZZLE GAME</div>
-	<div id="container" class="field"></div>
+	<div id="container" class="field" data-session="{{ session_id }}"></div>
 	
 	<script type="text/javascript" src="{{ url_for('static', filename='javascript/grid.js') }}"></script>
 	<script type="text/javascript" src="{{ url_for('static', filename='javascript/draw-grid.js') }}"></script>

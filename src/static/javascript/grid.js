@@ -1,5 +1,6 @@
 const container = document.getElementById('container');
 
+var sessionId = $(container).data('session')
 
 function createGrid(_grid) {
 	var grid = _grid;
@@ -37,7 +38,7 @@ function createGrid(_grid) {
 					console.log($(this)[0].textContent, col, row);
 					$.ajax({
                         type: 'POST',
-                        data: {'row': row, 'col': col},
+                        data: {'row': row, 'col': col, 'session': sessionId},
                         url: '/update',
                         success: function(data){
 							newField = data['field'];

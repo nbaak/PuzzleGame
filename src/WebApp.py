@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify, render_template
-import requests, json
+from lib.Session import Session
+from Game import Game
 
 app = Flask(__name__)
 
@@ -8,8 +9,20 @@ sessions = {}
 
 rows = 4
 cols = 5
-field = [[i+r for i in range(cols)] for r in range(rows)]
+field = [[i + r for i in range(cols)] for r in range(rows)]
 queue = [i for i in range(10)]
+
+
+def get_peer(request:request):
+    if 'HTTP_X_FORWARDED_FOR' in request.environ:
+        ip = request.environ['HTTP_X_FORWARDED_FOR']
+    elif 'REMOTE_ADDR' in request.environ:
+        ip = request.remote_addr
+        
+    port = request.environ['REMOTE_PORT']
+    
+    return ip, port
+
 
 @app.route("/")
 def index():
@@ -17,24 +30,38 @@ def index():
     
     
 @app.route("/game")
-def game():
-    return render_template('game.html')
+def game(): 
+    global sessions
+    ip, port = get_peer(request)
+        
+    print('/game', ip, port)
+    session = Session(ip, port)
+    session.game = Game(5, 4)
+    sessions[session.id] = session
+    
+    return render_template('game.html', session_id=session.id)
+
 
 @app.route("/update", methods=["POST", "GET"])
 def update_game():
-    global field
-    
-    if 'HTTP_X_FORWARDED_FOR' in request.environ:
-        ip = request.environ['HTTP_X_FORWARDED_FOR']
-    elif 'REMOTE_ADDR' in request.environ:
-        ip = request.remote_addr
-        
-    print(ip)
+    #global field
+    ip, port = get_peer(request)
     
     if request.method == 'POST':
-        row, col = int(request.form['row']), int(request.form['col'])
-        field[row][col] += 1
+        row, col, session_id = int(request.form['row']), int(request.form['col']), request.form['session']
+        
+        session = sessions[session_id]
+        if col > -1 and row > -1:
+            field = session.update((col, row))
+        else:
+            field = session.game.field
+        
+        print('/update', ip, port, session, row, col)
+        print(field)
     
+    elif request.method == 'GET':
+        print('/update', ip, port)
+        
         
     return jsonify({'field': field, 'queue': queue})
 

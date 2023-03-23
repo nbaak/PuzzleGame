@@ -99,9 +99,16 @@ class Game(Field):
         if placed == item:
             self.pop_queue_element()
         
-        
         return placed
-
+    
+    def play(self, pos:tuple[int]):
+        item = self.queue[0]
+        
+        placed = self.place_at(item, pos)
+        points, gameover = self.check_rules(pos, item)
+        
+        return placed, points, gameover       
+    
     def get_queue(self):
         return self.queue
     
@@ -153,4 +160,9 @@ if __name__ == "__main__":
     game.show()
 
     print(len(game))
+    print(game.queue)
+    
+    game.play((0,1))
+    game.play((1,0))
+    game.show()
 
