@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Puzzle Game{% endblock %}
+
+{% block content %}
+
+
+<body>
+	<div>PUZZLE GAME</div>
+	<div id="container" class="field"></div>
+	
+	<script type="text/javascript" src="{{ url_for('static', filename='javascript/grid.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='javascript/draw-grid.js') }}"></script>
+</body>
+
+{% endblock %}

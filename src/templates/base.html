@@ -1,0 +1,31 @@
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+	<title>{% block title %} {% endblock %}</title>
+	
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css">
+</head>
+
+<body>
+	<script src="{{ url_for('static', filename='javascript/jquery-3.6.4.js') }}"></script>
+
+	<div class="content_background">
+		<!-- maybe obsolete -->
+	</div>
+	
+	<div id="content">
+		{% block content %} 
+		
+		{% endblock %}	
+	</div>
+		
+	
+	
+	<script src="{{ url_for('static', filename='javascript/ajax-setup.js') }}"></script>
+	<!--<script src="{{ url_for('static', filename='javascript/ajax-send-on-click.js') }}"></script>-->
+</body>
+
+</html>
