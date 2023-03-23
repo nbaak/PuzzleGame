@@ -105,9 +105,19 @@ class Game(Field):
         item = self.queue[0]
         
         placed = self.place_at(item, pos)
-        points, gameover = self.check_rules(pos, item)
+        if placed == item:
+            points, gameover = self.check_rules(pos, item)
+            self.pop_queue_element()
+            
+            while points > 0:
+                points, gameover = self.check_rules(pos, item)
+                
+            
+        else:
+            points = 0
+            gameover = False
         
-        return placed, points, gameover       
+        return placed, self.points, gameover       
     
     def get_queue(self):
         return self.queue
@@ -162,7 +172,7 @@ if __name__ == "__main__":
     print(len(game))
     print(game.queue)
     
-    game.play((0,1))
-    game.play((1,0))
+    game.play((0, 1))
+    game.play((1, 0))
     game.show()
 

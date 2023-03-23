@@ -2,9 +2,9 @@ const container = document.getElementById('container');
 
 var sessionId = $(container).data('session')
 
-function createGrid(_grid) {
-	var grid = _grid;
-	update(_grid, true);
+function Game() {
+	var grid = null;
+	//update(_grid, true);
     
     function clear(){
 		while (container.firstChild) {
@@ -12,9 +12,9 @@ function createGrid(_grid) {
         }
 	}
     
-    function update(_grid, initial=false){
+    function update_grid(_grid, initial=false){
 		if (initial != true){
-		  clear();
+            clear();
 		}
 		
         grid = _grid;        
@@ -42,7 +42,9 @@ function createGrid(_grid) {
                         url: '/update',
                         success: function(data){
 							newField = data['field'];
-							update(newField);
+							update_grid(newField);
+							update_queue(data['queue'])
+							update_stats(data['points'], data['step'])
                         }
                     });
 				});
@@ -56,14 +58,20 @@ function createGrid(_grid) {
         }
 	};
 	
+	
+	function update_queue(queue){
+        console.log("Queue: " + queue);
+    }
+    
+    function update_stats(points, step) {
+        console.log("Stats: " + points + " " + step)
+    }
+	
 	return {
-		update,
+		update: update_grid,
 		clear,
 	}
 }
 
 
-myGrid = createGrid([[1,2], [3,4]])
-
-
-
+var game = Game()

@@ -17,8 +17,7 @@ class Session:
     def update(self, coordinates:tuple[int]):
         self.updated = time.time()
         
-        r = self.game.play(coordinates)
-        print('R', r)
+        _, points, gameover = self.game.play(coordinates)        
         
         return self.game.field
         

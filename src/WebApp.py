@@ -3,14 +3,7 @@ from lib.Session import Session
 from Game import Game
 
 app = Flask(__name__)
-
-# TODO: Session storage
 sessions = {}
-
-rows = 4
-cols = 5
-field = [[i + r for i in range(cols)] for r in range(rows)]
-queue = [i for i in range(10)]
 
 
 def get_peer(request:request):
@@ -42,9 +35,24 @@ def game():
     return render_template('game.html', session_id=session.id)
 
 
+@app.route("/initial", methods=["POST"])
+def initial_game():
+    ip, port = get_peer(request)
+    
+    session_id = request.form['session']
+    
+    session = sessions[session_id]
+    field = session.game.field
+    
+    print('/update', ip, port, session)
+    print(field)
+     
+        
+    return jsonify({'field': field, 'queue': session.game.queue, 'points': session.game.points, 'step': session.game.step})
+
+
 @app.route("/update", methods=["POST", "GET"])
 def update_game():
-    #global field
     ip, port = get_peer(request)
     
     if request.method == 'POST':
@@ -61,9 +69,11 @@ def update_game():
     
     elif request.method == 'GET':
         print('/update', ip, port)
+    
+    else:
+        exit()        
         
-        
-    return jsonify({'field': field, 'queue': queue})
+    return jsonify({'field': field, 'queue': session.game.queue, 'points': session.game.points, 'step': session.game.step})
 
 
 if __name__ == "__main__":

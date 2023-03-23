@@ -1,24 +1,14 @@
 
 function setField(field){
-    myGrid.update(field);
+    game.update(field);
 } 
 
 $('#container').ready(function(){
-    
-    /*
-    $.getJSON('/update', function(data){
-        field = data['field'];
-        queue = data['queue'];
-        
-        setField(field);
-    })
-    */
-    
-    // update is only POST
+
     $.ajax({
         type: 'POST',
-        data: {'row': -1, 'col': -1, 'session': sessionId},
-        url: '/update',
+        data: {'session': sessionId},
+        url: '/initial',
         success: function(data){
             console.log(data);
             
