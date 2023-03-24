@@ -1,6 +1,8 @@
 
-function setField(field){
-    game.update(field);
+function setField(data){
+    game.update_grid(data['field']);
+    game.update_queue(data['queue']);
+    game.update_stats(data['points'], data['step'], data['gameover']);
 } 
 
 $('#container').ready(function(){
@@ -12,7 +14,7 @@ $('#container').ready(function(){
         success: function(data){
             console.log(data);
             
-            setField(data['field']);
+            setField(data);
         }
     });
     

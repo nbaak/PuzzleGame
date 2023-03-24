@@ -90,7 +90,7 @@ function Game() {
             ele.textContent = v;
             queue.appendChild(ele);
         }) 
-    }
+    };
     
     function update_stats(points, step, gameover) {
         console.log("Stats: " + points + " " + step + " " + gameover) 
@@ -100,12 +100,13 @@ function Game() {
             statusText = "--Gameover-- )(" + points +")"
         }
         stats.textContent = statusText //TODO: + " Step: " + step
-    }
+    };
     
     return {
-        update: update_grid,
-        clear,
-    }
+        update_grid,
+        update_queue,
+        update_stats,
+    };
 }
 
 
