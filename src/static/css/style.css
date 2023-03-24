@@ -29,3 +29,21 @@
     margin: 1px;
     vertical-align: top;
 }
+
+.queue-element {
+	width: 40px;
+    height: 40px;
+    background-color: #dbdada;
+    display: inline-block;
+    margin: 1px;
+    vertical-align: top;
+}
+
+.queue-element-first {
+    width: 40px;
+    height: 40px;
+    background-color: #ff0000;
+    display: inline-block;
+    margin: 1px;
+    vertical-align: top;
+}

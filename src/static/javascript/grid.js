@@ -1,4 +1,6 @@
 const container = document.getElementById('container');
+const stats = document.getElementById('stats');
+const queue = document.getElementById('queue');
 
 var sessionId = $(container).data('session')
 
@@ -6,15 +8,15 @@ function Game() {
     var grid = null;
     //update(_grid, true);
     
-    function clear(){
-        while (container.firstChild) {
-            container.removeChild(container.firstChild);
+    function clear(element){
+        while (element.firstChild) {
+            element.removeChild(element.firstChild);
         }
     }
     
     function update_grid(_grid, initial=false){
         if (initial != true){
-            clear();
+            clear(container);
         }
         
         grid = _grid;        
@@ -73,12 +75,27 @@ function Game() {
     };
     
     
-    function update_queue(queue){
-        console.log("Queue: " + queue);
+    function update_queue(queueList){
+        console.log("Queue: " + queueList);
+        clear(queue);
+        
+        $(queueList).each(function(i, v){
+            console.log('Q: ' + i + ' ' + v);
+            var ele = document.createElement('div');
+            if(i==0){
+                ele.className = 'queue-element-first';
+            }else{                
+                ele.className = 'queue-element';
+            }
+            ele.textContent = v;
+            queue.appendChild(ele);
+        }) 
     }
     
     function update_stats(points, step) {
         console.log("Stats: " + points + " " + step)
+        clear(stats)
+        stats.textContent = "Points: " + points ; //TODO: + " Step: " + step
     }
     
     return {
