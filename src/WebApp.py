@@ -25,10 +25,9 @@ def index():
 @app.route("/game")
 def game(): 
     global sessions
-    ip, port = get_peer(request)
-        
-    print('/game', ip, port)
-    session = Session(ip, port)
+    ip, _ = get_peer(request)
+    
+    session = Session(ip)
     session.game = Game(5, 4)
     sessions[session.id] = session
     
@@ -36,13 +35,14 @@ def game():
 
 
 @app.route("/initial", methods=["POST"])
-def initial_game():    
+def initial_game(): 
     session_id = request.form['session']
     
     session = sessions[session_id]
     field = session.game.field
+    gameover = False
             
-    return jsonify({'field': field, 'queue': session.game.queue, 'points': session.game.points, 'step': session.game.step})
+    return jsonify({'field': field, 'queue': session.game.queue, 'points': session.game.points, 'step': session.game.step, 'gameover': gameover})
 
 
 @app.route("/update", methods=["POST"])
@@ -51,12 +51,12 @@ def update_game():
     
     session = sessions[session_id]
     if col > -1 and row > -1:
-        field = session.update((col, row))
+        field, gameover = session.update((col, row))
     else:
-        field = session.game.field        
-
+        field = session.game.field
+        gameover = False
         
-    return jsonify({'field': field, 'queue': session.game.queue, 'points': session.game.points, 'step': session.game.step})
+    return jsonify({'field': field, 'queue': session.game.queue, 'points': session.game.points, 'step': session.game.step, 'gameover': gameover})
 
 
 if __name__ == "__main__":

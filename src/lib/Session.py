@@ -18,7 +18,7 @@ class Session:
         
         _, points, gameover = self.game.play(coordinates)        
         
-        return self.game.field
+        return self.game.field, gameover
         
     def check(self):
         if self.game:

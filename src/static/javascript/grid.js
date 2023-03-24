@@ -60,7 +60,7 @@ function Game() {
                             newField = data['field'];
                             update_grid(newField);
                             update_queue(data['queue'])
-                            update_stats(data['points'], data['step'])
+                            update_stats(data['points'], data['step'], data['gameover'])
                         }
                     });
                 });
@@ -92,10 +92,14 @@ function Game() {
         }) 
     }
     
-    function update_stats(points, step) {
-        console.log("Stats: " + points + " " + step)
+    function update_stats(points, step, gameover) {
+        console.log("Stats: " + points + " " + step + " " + gameover) 
         clear(stats)
-        stats.textContent = "Points: " + points ; //TODO: + " Step: " + step
+        var statusText = "Points: " + points;
+        if(gameover){
+            statusText = "--Gameover-- )(" + points +")"
+        }
+        stats.textContent = statusText //TODO: + " Step: " + step
     }
     
     return {
