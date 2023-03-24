@@ -56,6 +56,9 @@ def update_game():
         field = session.game.field
         gameover = False
         
+    if gameover:
+        session.close()
+        
     return jsonify({'field': field, 'queue': session.game.queue, 'points': session.game.points, 'step': session.game.step, 'gameover': gameover})
 
 

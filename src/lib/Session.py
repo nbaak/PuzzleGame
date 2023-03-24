@@ -10,6 +10,10 @@ class Session:
         self.id = str(uuid.uuid4())
         self.started = time.time()
         self.updated = time.time()
+        self.closed = None
+    
+        self.points = 0
+        self.username = None
         
         self.game:Game = None
         
@@ -26,6 +30,10 @@ class Session:
             delta = int(current_time - self.updated)
             
             return delta < 60 * 30 # if older than 30min, return false
+        
+    def close(self):
+        self.closed = time.time()
+        self.points = self.game.points
     
     def __repr__(self):
         return self.id
