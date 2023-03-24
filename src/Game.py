@@ -20,7 +20,7 @@ class Game(Field):
     def _generate_obstacle(self):
         while len(self.blocked_fields) < self.level:
             r_pos = (random.randint(0, self.width - 1), random.randint(0, self.height - 1))
-            self.place_at(-1, r_pos)
+            self.place_at(-1, r_pos, pop=False)
             self.blocked_fields.add(r_pos)
 
     def _create_queue(self):
@@ -59,9 +59,9 @@ class Game(Field):
             points = len(found) * pos_value
 
             for p in found:
-                self.place_at(0, p, override=True)
+                self.place_at(0, p, override=True, pop=False)
 
-            self.place_at(pos_value + 1, pos)
+            self.place_at(pos_value + 1, pos, pop=False)
             if pos_value + 1 > self.max_value:
                 self.max_value = pos_value + 1
 
@@ -91,12 +91,12 @@ class Game(Field):
         self._generate_obstacle()
         self._create_queue()
         
-    def place_at(self, item, pos:tuple[int], override=False, do_step=False):
+    def place_at(self, item, pos:tuple[int], override=False, do_step=False, pop=True):
         if do_step:
             self.step += 1
         placed = Field.place_at(self, item, pos, override=override)
         
-        if placed == item:
+        if placed == item and pop:
             self.pop_queue_element()
         
         return placed
@@ -107,7 +107,7 @@ class Game(Field):
         placed = self.place_at(item, pos)
         if placed == item:
             points, gameover = self.check_rules(pos, item)
-            self.pop_queue_element()
+            # self.pop_queue_element()
             
             while points > 0:
                 points, gameover = self.check_rules(pos, item)

@@ -5,9 +5,8 @@ import Game
 
 class Session:
     
-    def __init__(self, ip, port):
+    def __init__(self, ip):
         self.ip = ip
-        self.port = port
         self.id = str(uuid.uuid4())
         self.started = time.time()
         self.updated = time.time()

@@ -36,42 +36,25 @@ def game():
 
 
 @app.route("/initial", methods=["POST"])
-def initial_game():
-    ip, port = get_peer(request)
-    
+def initial_game():    
     session_id = request.form['session']
     
     session = sessions[session_id]
     field = session.game.field
-    
-    print('/update', ip, port, session)
-    print(field)
-     
-        
+            
     return jsonify({'field': field, 'queue': session.game.queue, 'points': session.game.points, 'step': session.game.step})
 
 
-@app.route("/update", methods=["POST", "GET"])
+@app.route("/update", methods=["POST"])
 def update_game():
-    ip, port = get_peer(request)
+    row, col, session_id = int(request.form['row']), int(request.form['col']), request.form['session']
     
-    if request.method == 'POST':
-        row, col, session_id = int(request.form['row']), int(request.form['col']), request.form['session']
-        
-        session = sessions[session_id]
-        if col > -1 and row > -1:
-            field = session.update((col, row))
-        else:
-            field = session.game.field
-        
-        print('/update', ip, port, session, row, col)
-        print(field)
-    
-    elif request.method == 'GET':
-        print('/update', ip, port)
-    
+    session = sessions[session_id]
+    if col > -1 and row > -1:
+        field = session.update((col, row))
     else:
-        exit()        
+        field = session.game.field        
+
         
     return jsonify({'field': field, 'queue': session.game.queue, 'points': session.game.points, 'step': session.game.step})
 
