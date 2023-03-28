@@ -34,7 +34,7 @@ def game():
     return render_template('game.html', session_id=session.id)
 
 
-@app.route("/initial", methods=["POST"])
+@app.route("/api/game/initial", methods=["POST"])
 def initial_game(): 
     session_id = request.form['session']
     
@@ -45,7 +45,7 @@ def initial_game():
     return jsonify({'field': field, 'queue': session.game.queue, 'points': session.game.points, 'step': session.game.step, 'gameover': gameover})
 
 
-@app.route("/update", methods=["POST"])
+@app.route("/api/game/update", methods=["POST"])
 def update_game():
     row, col, session_id = int(request.form['row']), int(request.form['col']), request.form['session']
     

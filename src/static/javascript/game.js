@@ -55,7 +55,7 @@ function Game() {
                     $.ajax({
                         type: 'POST',
                         data: {'row': row, 'col': col, 'session': sessionId},
-                        url: '/update',
+                        url: '/api/game/update',
                         success: function(data){
                             newField = data['field'];
                             update_grid(newField);
@@ -97,7 +97,7 @@ function Game() {
         clear(stats)
         var statusText = "Points: " + points;
         if(gameover){
-            statusText = "--Gameover-- )(" + points +")"
+            statusText = "--Gameover-- (" + points +")"
         }
         stats.textContent = statusText //TODO: + " Step: " + step
     };

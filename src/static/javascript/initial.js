@@ -10,7 +10,7 @@ $('#container').ready(function(){
     $.ajax({
         type: 'POST',
         data: {'session': sessionId},
-        url: '/initial',
+        url: '/api/game/initial',
         success: function(data){
             console.log(data);
             
