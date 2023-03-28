@@ -19,10 +19,11 @@ def get_peer(request:request):
 
 @app.route("/")
 def index():
-    return 'Hello Worlds'
+    # TODO: settable difficulty
+    return render_template('index.html')
     
     
-@app.route("/game")
+@app.route("/play")
 def game(): 
     global sessions
     ip, _ = get_peer(request)

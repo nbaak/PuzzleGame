@@ -47,3 +47,21 @@
     margin: 1px;
     vertical-align: top;
 }
+
+.button {
+	margin-top: 100px;
+	border-style: dotted;
+	width: 100px;
+	text-align: center;
+	background: #dbdada;
+	border-width: 1px;
+}
+
+.button:hover {
+	cursor: pointer;
+}
+
+
+
+
+
