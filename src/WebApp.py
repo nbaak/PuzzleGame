@@ -74,7 +74,7 @@ def update_game():
 
 
 @app.route('/cleanup/<string:secret>', methods=['GET'])
-def session_cleanup(secret):
+def session_cleanup(secret:str):
     if secret_service.verify(secret, settings.SECRET_FILE):
         sessions_to_remove = []
         for _, session in sessions.items():
@@ -90,6 +90,20 @@ def session_cleanup(secret):
         return "SUCCESS", 200
 
     return "ERROR", 404
+
+
+@app.route('/debug/sessions')
+def debug_sessions():
+
+    def stamp_to_datetime(ts:float) -> str:
+        from time import strftime, localtime
+        return strftime("%Y-%m-%-d %H:%M:%S", localtime(ts))
+    
+    content = ""
+    for session in sessions.values():
+        content += f"{session.id} - {stamp_to_datetime(session.started)} - {stamp_to_datetime(session.updated)} - {session.game.points}<br>"
+        
+    return content, 200
 
 
 if __name__ == "__main__":
