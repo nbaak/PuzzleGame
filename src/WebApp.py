@@ -79,7 +79,7 @@ def session_cleanup(secret):
         sessions_to_remove = []
         for _, session in sessions.items():
             
-            if not session.check(max_age=1):
+            if not session.check(max_age=30):
                 sessions_to_remove.append(session.id)
                 
         if sessions_to_remove:
