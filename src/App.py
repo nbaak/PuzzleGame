@@ -4,7 +4,6 @@ import pygame
 import sys
 import os
 import uuid
-import py
 
 WINDOW_HEIGHT = 400
 WINDOW_WIDTH = 400

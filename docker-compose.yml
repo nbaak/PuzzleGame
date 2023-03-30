@@ -1,0 +1,11 @@
+version: '3.1'
+
+services:
+  puzzlegame:
+    build: .
+    image: k3nny0r/puzzlegame
+    container_name: puzzlegame
+    ports:
+      - 127.0.0.1:5000:5000
+    restart: always
+
