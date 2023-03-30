@@ -20,57 +20,58 @@ function Game() {
         }
         
         grid = _grid;        
-       
-        var rows = grid.length;
-        var cols = grid[0].length;
-        
-        for (let row = 0; row < rows; row++){
-            const rowElement = document.createElement('div');
-            rowElement.className = 'row';
-            const rowArr = [];
+        if(grid != null){
+            var rows = grid.length;
+            var cols = grid[0].length;
             
-            for (let col = 0; col < cols; col++){
-                const cell = document.createElement('div');
+            for (let row = 0; row < rows; row++){
+                const rowElement = document.createElement('div');
+                rowElement.className = 'row';
+                const rowArr = [];
                 
-                if (grid[row][col] > 0){
-                    cell.className = 'cell';
+                for (let col = 0; col < cols; col++){
+                    const cell = document.createElement('div');
                     
-                    const txtblock = document.createElement('div');                    
-                    txtblock.textContent = grid[row][col];
-                    txtblock.className = 'cell-label';
+                    if (grid[row][col] > 0){
+                        cell.className = 'cell';
+                        
+                        const txtblock = document.createElement('div');                    
+                        txtblock.textContent = grid[row][col];
+                        txtblock.className = 'cell-label';
+                        
+                        cell.append(txtblock);
+                        
+                    }else if (grid[row][col] == 0) {
+                        cell.className = 'cell';
+                    }
+                    else {
+                        cell.className = 'cell-block';
+                    }
                     
-                    cell.append(txtblock);
-                    
-                }else if (grid[row][col] == 0) {
-                    cell.className = 'cell';
-                }
-                else {
-                    cell.className = 'cell-block';
-                }
-                
-                cell.setAttribute('data-row', row);
-                cell.setAttribute('data-col', col);
-                cell.addEventListener('click', function(){
-                    console.log($(this)[0].textContent, col, row);
-                    $.ajax({
-                        type: 'POST',
-                        data: {'row': row, 'col': col, 'session': sessionId},
-                        url: '/api/game/update',
-                        success: function(data){
-                            newField = data['field'];
-                            update_grid(newField);
-                            update_queue(data['queue'])
-                            update_stats(data['points'], data['step'], data['gameover'])
-                        }
+                    cell.setAttribute('data-row', row);
+                    cell.setAttribute('data-col', col);
+                    cell.addEventListener('click', function(){
+                        console.log($(this)[0].textContent, col, row);
+                        $.ajax({
+                            type: 'POST',
+                            data: {'row': row, 'col': col, 'session': sessionId},
+                            url: '/api/game/update',
+                            success: function(data){
+                                newField = data['field'];
+                                update_grid(newField);
+                                update_queue(data['queue'])
+                                update_stats(data['points'], data['step'], data['gameover'], data['timeout'])
+                            }
+                        });
                     });
-                });
+                    
+                    rowElement.appendChild(cell);
+                    rowArr.push(cell);
+                }
                 
-                rowElement.appendChild(cell);
-                rowArr.push(cell);
+                container.appendChild(rowElement);
+                grid.push(rowArr);    
             }
-            
-            container.appendChild(rowElement);
-            grid.push(rowArr);    
         }
     };
     
@@ -92,14 +93,25 @@ function Game() {
         }) 
     };
     
-    function update_stats(points, step, gameover) {
+    function update_stats(points, step, gameover, timeout) {
         console.log("Stats: " + points + " " + step + " " + gameover) 
         clear(stats)
         var statusText = "Points: " + points;
         if(gameover){
             statusText = "--Gameover-- (" + points +")"
         }
-        stats.textContent = statusText //TODO: + " Step: " + step
+        
+        if(timeout){
+            statusText  = "you timed out..."
+        };
+        
+        stats.textContent = statusText; //TODO: + " Step: " + step
+        
+        if(timeout){
+            setTimeout(function(){
+                window.open('/', '_self');    
+            }, 3000);            
+        }
     };
     
     return {

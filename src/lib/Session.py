@@ -24,12 +24,21 @@ class Session:
         
         return self.game.field, gameover
         
-    def check(self):
-        if self.game:
-            current_time = time.time()
-            delta = int(current_time - self.updated)
+    def check(self, max_age:int=30) -> bool:
+        """
+            check
+            checks if session is older than max_age
+            max_age:int : age in minutes
+            @return: bool
             
-            return delta < 60 * 30 # if older than 30min, return false
+        """
+        if not self.game:
+            return False
+        
+        current_time = time.time()
+        delta = int(current_time - self.updated)
+        
+        return delta < 60 * max_age # if older than 30min, return false
         
     def close(self):
         self.closed = time.time()

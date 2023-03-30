@@ -1,2 +1,2 @@
 
-0 * * * * /usr/local/bin/python3 /application/update_database.py
+0 * * * * /usr/local/bin/python3 /application/session_cleanup.py
