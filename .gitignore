@@ -4,3 +4,4 @@ __pycache__
 screenshots/
 *.secret
 saves
+*.ladder

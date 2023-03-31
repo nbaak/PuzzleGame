@@ -54,6 +54,9 @@ class Leaderboard:
             ladder += f"{user} - {session} - {points}\n"
         
         print(ladder)
+        
+    def get(self):
+        return [(nr, data[0], data[1], data[2]) for nr, data in enumerate(self.ladder)]
 
         
 if __name__ == "__main__":
@@ -73,4 +76,18 @@ if __name__ == "__main__":
     
     print("save location:")
     print(l.filename.resolve())
+    print(l.get())
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     

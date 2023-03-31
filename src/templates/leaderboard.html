@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Puzzle Game{% endblock %}
+
+{% block content %}
+
+
+<body>
+    <div class="headline">PUZZLE GAME - Leaderboard</div>
+
+    <div class="leaders">
+        {% if leaderboard %}
+	        {% for nr, user, session, points in leaderboard %}
+	            <div data-session="{{ session }}">{{nr}} {{user}} {{points}}</div>
+	        {% endfor %}
+        {% else %}
+            <div>no leaders so far!</div>	        
+        {% endif %}    
+    </div>
+    
+    <div class="button" data-src="/play">PLAY</div>
+    
+    
+    <script type="text/javascript" src="{{ url_for('static', filename='javascript/button.js') }}"></script>
+</body>
+
+{% endblock %}

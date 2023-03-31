@@ -30,16 +30,27 @@ def index():
     return render_template('index.html')
 
 
-@app.route("/leaderboard")
-def ladder():
-    return render_template('index.html')
+@app.route("/leaderboard/<int:width>/<int:height>/<int:level>")
+@app.route("/leaderboard/<int:width>/<int:height>", defaults={'level':0})
+@app.route("/leaderboard", defaults={'width': 5, 'height': 4, 'level':0})
+def ladder(width, height, level):
+    
+    try:
+        board = f"{width}-{height}-{level}"
+        leaderboard = leaderboards[board].get()
+        
+    except KeyError:
+        leaderboard = None
+    
+    return render_template('leaderboard.html', leaderboard=leaderboard)
     
 
-@app.route("/play/<int:width>/<int:height>", defaults={'level':0})
 @app.route("/play/<int:width>/<int:height>/<int:level>")
+@app.route("/play/<int:width>/<int:height>", defaults={'level':0})
 @app.route("/play", defaults={'width': 5, 'height': 4, 'level':0})
 def play(width, height, level):
     global sessions
+    
     ip, _ = get_peer(request)
     
     width, height = int(width), int(height)
@@ -48,7 +59,7 @@ def play(width, height, level):
     session.game = Game(width, height, level)
     sessions[session.id] = session
     
-    return render_template('game.html', session_id=session.id, game_width=width, game_height=height)
+    return render_template('game.html', session_id=session.id, game_width=width, game_height=height, game_level=level)
 
 
 @app.route("/api/game/initial", methods=["POST"])
@@ -102,8 +113,6 @@ def api_leaderboard():
             leaderboard.add_user(username, session.id, session.points)
             
             leaderboards[board] = leaderboard
-            
-            
         
         return 'SUCCESS', 200
         

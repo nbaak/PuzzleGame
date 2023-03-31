@@ -3,6 +3,10 @@ const stats = document.getElementById('stats');
 const queue = document.getElementById('queue');
 
 var sessionId = $(container).data('session')
+var width = $(container).data('width')
+var height = $(container).data('height')
+var level = $(container).data('level')
+
 
 function Game() {
     var grid = null;
@@ -146,7 +150,7 @@ function Game() {
                         data: {'session': sessionId, 'username': username},
                         url: '/api/leaderboard',
                         success: function(data){
-                            window.open('/', '_self');
+                            window.open('/leaderboard/'+width+'/'+height+'/'+level, '_self');
                         }
                     });
                 } else {
