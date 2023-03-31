@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify, render_template
 from lib.Session import Session
+from lib.Leaderboard import Leaderboard
 from Game import Game
 
 import settings
@@ -7,7 +8,9 @@ import secret_service
 import logging
 
 app = Flask(__name__)
+
 sessions = {}
+leaderboards = {}
 
 
 def get_peer(request:request):
@@ -25,18 +28,27 @@ def get_peer(request:request):
 def index():
     # TODO: settable difficulty
     return render_template('index.html')
+
+
+@app.route("/leaderboard")
+def ladder():
+    return render_template('index.html')
     
-    
-@app.route("/play")
-def play(): 
+
+@app.route("/play/<int:width>/<int:height>", defaults={'level':0})
+@app.route("/play/<int:width>/<int:height>/<int:level>")
+@app.route("/play", defaults={'width': 5, 'height': 4, 'level':0})
+def play(width, height, level):
     global sessions
     ip, _ = get_peer(request)
     
+    width, height = int(width), int(height)
+    
     session = Session(ip)
-    session.game = Game(5, 4)
+    session.game = Game(width, height, level)
     sessions[session.id] = session
     
-    return render_template('game.html', session_id=session.id)
+    return render_template('game.html', session_id=session.id, game_width=width, game_height=height)
 
 
 @app.route("/api/game/initial", methods=["POST"])
@@ -72,6 +84,32 @@ def update_game():
                     
         return jsonify({'field': None, 'queue': None, 'points': 0, 'step': 0, 'gameover': False, 'timeout': True})
 
+    
+@app.route("/api/leaderboard", methods=["POST"])
+def api_leaderboard():
+    global leaderboards
+    try:
+        session_id = request.form['session']
+        username = request.form['username']
+        
+        session = sessions[session_id]
+        
+        if session.closed:
+            print(session_id, username, session.points)
+            print(session.closed)
+            board = f"{session.game.width}-{session.game.height}-{session.game.level}"
+            leaderboard = Leaderboard(session.game.width, session.game.height, session.game.level, file_location='./saves')
+            leaderboard.add_user(username, session.id, session.points)
+            
+            leaderboards[board] = leaderboard
+            
+            
+        
+        return 'SUCCESS', 200
+        
+    except:
+        return 'ERROR', 404
+
 
 @app.route('/cleanup/<string:secret>', methods=['GET'])
 def session_cleanup(secret:str):
@@ -101,9 +139,15 @@ def debug_sessions():
     
     content = ""
     for session in sessions.values():
-        content += f"{session.id} - {stamp_to_datetime(session.started)} - {stamp_to_datetime(session.updated)} - {session.game.points}<br>"
-        
-    return content, 200
+        content += f"{session.id} - {stamp_to_datetime(session.started)} - {stamp_to_datetime(session.updated)} - {session.game.points}\n"
+    
+    response = app.response_class(
+        response=content,
+        status=200,
+        mimetype="text/plain"
+    )
+    
+    return response
 
 
 if __name__ == "__main__":

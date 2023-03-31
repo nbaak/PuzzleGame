@@ -99,17 +99,79 @@ function Game() {
         var statusText = "Points: " + points;
         if(gameover){
             statusText = "--Gameover-- (" + points +")"
+            
+            const veil = document.createElement('div');
+            veil.className = 'veil';
+            
+            const input_box = document.createElement('div');
+            const text_box = document.createElement('div');
+            text_box.textContent = 'Join the Leaderboard!';            
+            text_box.className = 'textbox';
+            
+            const pts_box = document.createElement('div');
+            pts_box.textContent = 'You reached ' + points + ' Points!'
+            
+            
+            input_box.className = 'leaderboard-join';
+            
+            input_box.append(text_box);
+            input_box.append(pts_box);
+                        
+            const input_field = document.createElement('input');
+            input_field.id = 'input-username';
+            $(input_field).on('keypress', function (event) {
+                var regex = new RegExp("^[a-zA-Z0-9]+$");
+                var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+                if (!regex.test(key)) {
+                   event.preventDefault();
+                   return false;
+                }
+            });
+            
+            const btn_send = document.createElement('div');
+            btn_send.className = 'btn-send';
+            btn_send.innerHTML = 'send';
+            
+            const info_box = document.createElement('div');
+            info_box.className = 'infobox';
+            
+            btn_send.addEventListener('click', function(){
+                var username = $('#input-username')[0].value;
+                $('.infobox')[0].textContent = "";
+                
+                
+                if (username.length >= 4) {
+                    $.ajax({
+                        type: 'POST',
+                        data: {'session': sessionId, 'username': username},
+                        url: '/api/leaderboard',
+                        success: function(data){
+                            window.open('/', '_self');
+                        }
+                    });
+                } else {
+                    $('.infobox')[0].textContent += "Username is not long enough!";
+                }             
+                
+            });
+            
+            input_box.append(input_field);
+            input_box.append(btn_send)
+            input_box.append(info_box)
+            
+            $(document.body).append(veil);
+            $(document.body).append(input_box);
         }
         
         if(timeout){
             statusText  = "you timed out..."
         };
         
-        stats.textContent = statusText; //TODO: + " Step: " + step
+        stats.textContent = statusText;
         
         if(timeout){
             setTimeout(function(){
-                window.open('/', '_self');    
+                window.open('/', '_self');
             }, 3000);            
         }
     };

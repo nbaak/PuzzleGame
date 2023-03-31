@@ -61,6 +61,43 @@
 	cursor: pointer;
 }
 
+.veil {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	background-color: #ff0000;
+	opacity: .8;
+	top: 0;
+	left: 0;
+}
+
+.leaderboard-join {
+	top: 20px;
+	left: 20px;
+	position: absolute;
+	width: 400px;
+	height: 200px;
+	background-color: #ffffff;
+	border: 1px;
+	border-style: solid;
+	padding: 10px;
+}
+
+#input-username {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.btn-send {
+	border: 1px;
+    width: fit-content;
+    border-style: solid;
+}
+
+.btn-send:hover {
+	cursor: pointer;
+}
+
 
 
 
