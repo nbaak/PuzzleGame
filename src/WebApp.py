@@ -104,10 +104,8 @@ def api_leaderboard():
         username = request.form['username']
         
         session = sessions[session_id]
-        
         if session.closed:
-            print(session_id, username, session.points)
-            print(session.closed)
+            
             board = f"{session.game.width}-{session.game.height}-{session.game.level}"
             leaderboard = Leaderboard(session.game.width, session.game.height, session.game.level, file_location='./saves')
             leaderboard.add_user(username, session.id, session.points)
@@ -116,7 +114,8 @@ def api_leaderboard():
         
         return 'SUCCESS', 200
         
-    except:
+    except Exception as e:
+        logging.error(str(e))
         return 'ERROR', 404
 
 

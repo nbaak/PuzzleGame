@@ -19,4 +19,5 @@ RUN groupadd -r app -g 1000 && \
 USER app
 
 EXPOSE 5000
-ENTRYPOINT ["/application/start.sh"]
+WORKDIR /application
+ENTRYPOINT ["./start.sh"]

@@ -5,6 +5,7 @@ from pathlib import Path
 class Leaderboard:
     
     def __init__(self, width, height, level, file_location="./"):
+
         if Path(file_location).exists():
             self.file_location = Path(file_location)
         else:
@@ -77,17 +78,4 @@ if __name__ == "__main__":
     print("save location:")
     print(l.filename.resolve())
     print(l.get())
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
