@@ -6,6 +6,7 @@ RUN python -m pip install --upgrade pip
 RUN python -m pip install flask requests pygame
 
 RUN mkdir /application && cd /application
+
 COPY ./src /application
 
 ADD ./crontab/crontab /application/crontab
