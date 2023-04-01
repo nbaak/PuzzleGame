@@ -1,6 +1,8 @@
-<img src="example.jpg" />
 
 # Block Add Game
+
+<img src="example.jpg" width=25%/>
+
 A small Puzzle Game written in Python using Pygame.
 
 ## Installation
@@ -8,6 +10,24 @@ We need at least the Pygame module for python to play with App.py. If we want to
 
 ```bash
 python3 -m pip install pygame flask
+```
+
+Build the Container:
+
+```bash
+docker-compose build
+```
+
+Create a 'saves' Folder in the Readme.md directory. (Because there are some bugs with docker-compose not reconnecting to volumes, that I don't understand).
+
+```bash
+mkdir saves
+```
+
+Run the docker-compose up command to start the container.
+
+```bash
+docker-compose up -d
 ```
 
 ## How to play
