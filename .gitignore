@@ -3,5 +3,4 @@ __pycache__
 .pydevproject
 screenshots/
 *.secret
-saves
 *.ladder
