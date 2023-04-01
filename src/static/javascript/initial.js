@@ -11,9 +11,7 @@ $('#container').ready(function(){
         type: 'POST',
         data: {'session': sessionId},
         url: '/api/game/initial',
-        success: function(data){
-            console.log(data);
-            
+        success: function(data){            
             setField(data);
         }
     });

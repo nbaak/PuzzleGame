@@ -55,7 +55,6 @@ function Game() {
                     cell.setAttribute('data-row', row);
                     cell.setAttribute('data-col', col);
                     cell.addEventListener('click', function(){
-                        console.log($(this)[0].textContent, col, row);
                         $.ajax({
                             type: 'POST',
                             data: {'row': row, 'col': col, 'session': sessionId},
@@ -81,11 +80,9 @@ function Game() {
     
     
     function update_queue(queueList){
-        console.log("Queue: " + queueList);
         clear(queue);
         
         $(queueList).each(function(i, v){
-            console.log('Q: ' + i + ' ' + v);
             var ele = document.createElement('div');
             if(i==0){
                 ele.className = 'queue-element-first';
@@ -98,7 +95,6 @@ function Game() {
     };
     
     function update_stats(points, step, gameover, timeout) {
-        console.log("Stats: " + points + " " + step + " " + gameover) 
         clear(stats)
         var statusText = "Points: " + points;
         if(gameover){
