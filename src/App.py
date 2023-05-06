@@ -128,17 +128,19 @@ def main(width=4, height=3, level=0):
                     sys.exit()
 
         if pos:
-            _, gameover = set_value(pos, game)
+            # _, gameover = set_value(pos, game)
+            _, _, gameover = game.play(pos)
             pygame.display.set_caption(f'Block Riddle {game.points}')
             pos = None
 
         if gameover:
             game.reset()
             print("game over")
+            print(len(game.replay))
             gameover = False
 
         pygame.display.update()
 
 
 if __name__ == "__main__":
-    main(5, 4, 0)
+    main(5, 5, 0)
