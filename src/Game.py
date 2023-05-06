@@ -16,6 +16,9 @@ class Game(Field):
 
         self.points = 0
         self.step = 0
+        
+        self.replay = []
+        self.replay.append(self.field.copy())
 
     def _generate_obstacle(self):
         while len(self.blocked_fields) < self.level:
@@ -110,13 +113,13 @@ class Game(Field):
             # self.pop_queue_element()
             
             while points > 0:
-                points, gameover = self.check_rules(pos, item)
-                
+                points, gameover = self.check_rules(pos, item)                
             
         else:
             points = 0
             gameover = False
         
+        self.replay.append(self.field.copy())
         return placed, self.points, gameover       
     
     def get_queue(self):
