@@ -86,6 +86,7 @@ def update_game():
             gameover = False
             
         if gameover:
+            print(len(session.game.replay_field), session.game.step)
             session.close()
             
         return jsonify({'field': field, 'queue': session.game.queue, 'points': session.game.points, 'step': session.game.step, 'gameover': gameover, 'timeout': False})
@@ -162,5 +163,7 @@ if __name__ == "__main__":
     logging.basicConfig(format='%(message)s',
                         encoding='utf-8',
                         level=logging.INFO)
+    
+    # TODO: try to reconnect leaderboards, if some exist
     
     app.run(host="0.0.0.0", port=5000, debug=True)

@@ -2,6 +2,7 @@
 import pygame.display
 import colors
 
+from PIL import Image
 from Game import Game
 import os
 
@@ -64,8 +65,17 @@ def store_screenshot(screen, session, filename):
     
     if not os.path.exists(path):
         os.makedirs(path, exist_ok=True)
+    
+    image_file = f'{path}/{filename:05}.jpg'
+    pygame.image.save(screen, image_file)
+    return image_file
+
+def save_images_as_animation(frames, filename="video.gif", duration=10, loop=1):
+    animation_images = []
+    for frame in frames:
+        animation_images.append(frame)
         
-    pygame.image.save(screen, f'./screenshots/{session}/{filename:05}.jpg')
+    animation_images[0].save(filename, save_all=True, append_images=animation_images[1:], duration=duration, loop=loop)
 
 
 def safe_replay(game:Game, session):
@@ -80,6 +90,8 @@ def safe_replay(game:Game, session):
 
     screen = pygame.display.set_mode((window_width, window_height))
     screen.fill(colors.WHITE)
+    
+    frames = []
 
     for field, queue, pts in zip(game.replay_field, game.replay_queue, game.replay_pts):
         r_game.field = field
@@ -93,5 +105,8 @@ def safe_replay(game:Game, session):
         
         print(field, pts)
         
-        store_screenshot(screen, session, step)
+        im = store_screenshot(screen, session, step)
+        frames.append(Image.open(im))
         step += 1
+    
+    save_images_as_animation(frames, f'./screenshots/{session}/anim.gif')
