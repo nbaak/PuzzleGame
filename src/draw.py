@@ -79,7 +79,6 @@ def safe_replay(game:Game, session):
     window_height = dims[1] * BLOCKSIZE + int(.9 * BLOCKSIZE)
 
     screen = pygame.display.set_mode((window_width, window_height))
-    # clock = pygame.time.Clock()
     screen.fill(colors.WHITE)
 
     for field, queue, pts in zip(game.replay_field, game.replay_queue, game.replay_pts):
@@ -88,9 +87,11 @@ def safe_replay(game:Game, session):
         r_game.points = pts
         r_game.step = step
 
-        draw_grid(screen, blocksize=BLOCKSIZE, game=game)
-        draw_queue(screen, blocksize=BLOCKSIZE // 2, start_at_height=window_height - BLOCKSIZE // 2, game=game)
-        draw_status(screen, fontsize=FONTSIZE_STATUS, start_at_height=window_height - int(BLOCKSIZE * .9), width=window_width, game=game)
+        draw_grid(screen, blocksize=BLOCKSIZE, game=r_game)
+        draw_queue(screen, blocksize=BLOCKSIZE // 2, start_at_height=window_height - BLOCKSIZE // 2, game=r_game)
+        draw_status(screen, fontsize=FONTSIZE_STATUS, start_at_height=window_height - int(BLOCKSIZE * .9), width=window_width, game=r_game)
+        
+        print(field, pts)
         
         store_screenshot(screen, session, step)
         step += 1

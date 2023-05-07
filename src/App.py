@@ -75,8 +75,12 @@ def main(width=4, height=3, level=0):
                 if event.key == pygame.K_r:
                     print('forced reset')
                     safe_replay(game, 'test')
-                    game.reset()
                     
+                if event.key == pygame.K_h:
+                    print('HELP')
+                    for f,q,p in zip(game.replay_field, game.replay_queue, game.replay_pts):
+                        print(f, p)
+                        
                 if event.key == pygame.K_q:
                     pygame.quit()
                     sys.exit()

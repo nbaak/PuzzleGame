@@ -23,8 +23,9 @@ class Game(Field):
         self._add_replay()
         
     def _add_replay(self):
-        self.replay_field.append(self.field.copy())
-        self.replay_queue.append(self.queue.copy())
+        import copy
+        self.replay_field.append(copy.deepcopy(self.field))
+        self.replay_queue.append(copy.deepcopy(self.queue.copy()))
         self.replay_pts.append(self.points)
 
     def _generate_obstacle(self):
@@ -100,6 +101,13 @@ class Game(Field):
 
         self._generate_obstacle()
         self._create_queue()
+        
+        self.replay_field = []
+        self.replay_queue = []
+        self.replay_pts = []
+        
+        self._add_replay()
+        
         
     def place_at(self, item, pos:tuple[int], override=False, do_step=False, pop=True):
         if do_step:
