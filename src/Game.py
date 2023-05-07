@@ -1,7 +1,6 @@
 from Field import Field
 import random
 
-
 class Game(Field):
 
     def __init__(self, width, height, level=0):
@@ -17,8 +16,16 @@ class Game(Field):
         self.points = 0
         self.step = 0
         
-        self.replay = []
-        self.replay.append(self.field.copy())
+        self.replay_field = []
+        self.replay_queue = []
+        self.replay_pts = []
+        
+        self._add_replay()
+        
+    def _add_replay(self):
+        self.replay_field.append(self.field.copy())
+        self.replay_queue.append(self.queue.copy())
+        self.replay_pts.append(self.points)
 
     def _generate_obstacle(self):
         while len(self.blocked_fields) < self.level:
@@ -119,7 +126,8 @@ class Game(Field):
             points = 0
             gameover = False
         
-        self.replay.append(self.field.copy())
+        self._add_replay()
+        
         return placed, self.points, gameover       
     
     def get_queue(self):
