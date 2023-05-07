@@ -1,5 +1,5 @@
 from Game import Game
-from draw import draw_grid, draw_queue, draw_status
+from draw import draw_grid, draw_queue, draw_status, safe_replay
 import colors
 import pygame
 import sys
@@ -74,6 +74,7 @@ def main(width=4, height=3, level=0):
 
                 if event.key == pygame.K_r:
                     print('forced reset')
+                    safe_replay(game, 'test')
                     game.reset()
                     
                 if event.key == pygame.K_q:

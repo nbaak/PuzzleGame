@@ -65,10 +65,10 @@ def store_screenshot(screen, session, filename):
     if not os.path.exists(path):
         os.makedirs(path, exist_ok=True)
         
-    pygame.image.save(screen, f'./screenshots/{session}/{filename}.jpg')
+    pygame.image.save(screen, f'./screenshots/{session}/{filename:05}.jpg')
 
 
-def draw(game:Game, session):
+def safe_replay(game:Game, session):
     r_game = Game(game.width, game.height, game.level)
     step = 1
 
@@ -93,3 +93,4 @@ def draw(game:Game, session):
         draw_status(screen, fontsize=FONTSIZE_STATUS, start_at_height=window_height - int(BLOCKSIZE * .9), width=window_width, game=game)
         
         store_screenshot(screen, session, step)
+        step += 1
