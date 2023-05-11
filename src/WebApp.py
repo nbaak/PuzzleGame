@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, send_file
 from lib.Session import Session
 from lib.Leaderboard import Leaderboard
 from Game import Game
@@ -6,6 +6,8 @@ from Game import Game
 import settings
 import secret_service
 import logging
+from draw import safe_replay
+import os
 
 app = Flask(__name__)
 
@@ -107,6 +109,8 @@ def api_leaderboard():
         session = sessions[session_id]
         if session.closed:
             
+            safe_replay(session.game, session.id)
+            
             board = f"{session.game.width}-{session.game.height}-{session.game.level}"
             leaderboard = Leaderboard(session.game.width, session.game.height, session.game.level, file_location='./saves')
             leaderboard.add_user(username, session.id, session.points)
@@ -137,6 +141,14 @@ def session_cleanup(secret:str):
         return "SUCCESS", 200
 
     return "ERROR", 404
+
+@app.route('/api/replay/<string:session_id>', methods=['GET'])
+def get_image(session_id:str):
+    
+    image_path = f"./screenshots/{session_id}/anim.gif"
+    
+    if os.path.exists(image_path):
+        return send_file(image_path, mimetype='image/gif')
 
 
 @app.route('/debug/sessions')

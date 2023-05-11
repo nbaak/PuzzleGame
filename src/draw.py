@@ -110,3 +110,4 @@ def safe_replay(game:Game, session):
         step += 1
     
     save_images_as_animation(frames, f'./screenshots/{session}/anim.gif')
+    pygame.quit()
