@@ -142,7 +142,7 @@ def session_cleanup(secret:str):
 
     return "ERROR", 404
 
-@app.route('/api/replay/<string:session_id>', methods=['GET'])
+@app.route('/replay/<string:session_id>', methods=['GET'])
 def get_image(session_id:str):
     
     image_path = f"./screenshots/{session_id}/anim.gif"

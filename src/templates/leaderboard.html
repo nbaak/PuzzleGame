@@ -10,7 +10,7 @@
     <div class="leaders">
         {% if leaderboard %}
 	        {% for nr, user, session, points in leaderboard %}
-	            <div data-session="{{ session }}">{{nr}} {{user}} {{points}} - <a href="/api/replay/{{ session }}">replay</a></div>	            
+	            <div data-session="{{ session }}">{{nr}} {{user}} {{points}} - <a href="/replay/{{ session }}">replay</a></div>	            
 	        {% endfor %}
         {% else %}
             <div>no leaders so far!</div>	        
