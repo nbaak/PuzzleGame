@@ -178,4 +178,6 @@ if __name__ == "__main__":
     
     # TODO: try to reconnect leaderboards, if some exist
     
+    leaderboards = Leaderboard.load_leaderboards('./saves')
+    
     app.run(host="0.0.0.0", port=5000, debug=True)
