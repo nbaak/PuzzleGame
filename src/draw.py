@@ -78,7 +78,7 @@ def save_images_as_animation(frames, filename="video.gif", duration=10, loop=1):
     animation_images[0].save(filename, save_all=True, append_images=animation_images[1:], duration=duration, loop=loop)
 
 
-def safe_replay(game:Game, session):
+def safe_replay(game:Game, session, dq=False):
     r_game = Game(game.width, game.height, game.level)
     step = 1
 
@@ -103,11 +103,13 @@ def safe_replay(game:Game, session):
         draw_queue(screen, blocksize=BLOCKSIZE // 2, start_at_height=window_height - BLOCKSIZE // 2, game=r_game)
         draw_status(screen, fontsize=FONTSIZE_STATUS, start_at_height=window_height - int(BLOCKSIZE * .9), width=window_width, game=r_game)
         
-        print(field, pts)
+        # print(field, pts)
         
         im = store_screenshot(screen, session, step)
         frames.append(Image.open(im))
         step += 1
     
-    save_images_as_animation(frames, f'./screenshots/{session}/anim.gif')
-    pygame.quit()
+    # print(f'video has {len(frames)} frames')
+    save_images_as_animation(frames, f'./screenshots/{session}/anim.gif', duration=500, loop=0)
+    if not dq:
+        pygame.quit()

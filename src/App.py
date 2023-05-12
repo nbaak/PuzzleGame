@@ -92,13 +92,13 @@ def main(width=4, height=3, level=0):
             pos = None
 
         if gameover:
-            game.reset()
             print("game over")
-            print(len(game.replay_field))
+            safe_replay(game, 'test', dq=True)
+            game.reset()
             gameover = False
 
         pygame.display.update()
 
 
 if __name__ == "__main__":
-    main(5, 5, 0)
+    main(2, 2, 0)
